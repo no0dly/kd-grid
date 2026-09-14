@@ -61,22 +61,22 @@
   background: #d4c286;
 }
 
-.Table {
+.List {
   width: 100%;
-  border-collapse: collapse;
   background: #161410;
   border: 1px solid #3a3428;
 }
 
-.Table th,
-.Table td {
-  padding: 0.7rem 0.85rem;
-  text-align: left;
-  vertical-align: middle;
+.ListHead,
+.Row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   border-bottom: 1px solid #2c281f;
 }
 
-.Table th {
+.ListHead {
+  padding: 0.7rem 0.85rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 0.72rem;
@@ -84,31 +84,31 @@
   font-weight: 600;
 }
 
-.Table tbody tr:hover {
-  background: #1d1b17;
-}
-
-.Table tbody tr:last-child td {
+.Row:last-child {
   border-bottom: none;
 }
 
-.NameLink {
+.Row:hover {
+  background: #1d1b17;
+}
+
+.RowLink {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem 0.85rem;
   color: inherit;
   text-decoration: none;
   font: inherit;
+  cursor: pointer;
 }
 
-.NameLink:hover {
+.Row:hover .RowLink {
   color: #c8b273;
 }
 
-.Actions {
-  width: 1%;
-  white-space: nowrap;
-  text-align: right;
-}
-
 .Delete {
+  flex-shrink: 0;
+  margin-right: 0.85rem;
   display: inline-block;
   border: 1px solid #3a3428;
   background: transparent;

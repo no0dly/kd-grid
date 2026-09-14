@@ -14,6 +14,7 @@ import {
 import { AppHeader } from "@/components/app/AppHeader";
 import { GearDragPreview } from "@/components/gear/grid/GearDragPreview";
 import { GearSlot } from "@/components/gear/grid/GearSlot";
+import { ScreenshotNameField } from "@/components/gear/grid/ScreenshotNameField";
 import { SurvivorNameField } from "@/components/gear/grid/SurvivorNameField";
 import { GearPicker } from "@/components/gear/picker";
 import { RecentRail } from "@/components/gear/recent";
@@ -44,7 +45,6 @@ export function GearGridPage() {
   const [pickerIndex, setPickerIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState<GearItem | undefined>();
-  const [shotStatus, setShotStatus] = useState<string | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -106,11 +106,12 @@ export function GearGridPage() {
     }
 
     try {
-      await downloadGridPng(gridRef.current, survivor.name);
-      setShotStatus("Saved a PNG of the grid.");
+      await downloadGridPng(
+        gridRef.current,
+        survivor.screenshotName.trim() || survivor.name,
+      );
     } catch (shotError) {
       console.error(shotError);
-      setShotStatus("Could not capture the grid.");
     }
   }
 
@@ -156,11 +157,19 @@ export function GearGridPage() {
           <section className={styles.Stage}>
             <div className={styles.NameRow}>
               <SurvivorNameField
-                key={survivor.id}
+                key={`${survivor.id}-name`}
                 id={survivor.id}
                 name={survivor.name}
                 className={styles.NameInput}
+                labelClassName={styles.NameLabel}
                 errorClassName={styles.NameError}
+              />
+              <ScreenshotNameField
+                key={`${survivor.id}-screenshot`}
+                id={survivor.id}
+                screenshotName={survivor.screenshotName}
+                className={styles.NameInput}
+                labelClassName={styles.NameLabel}
               />
               <button
                 type="button"
@@ -176,7 +185,6 @@ export function GearGridPage() {
             {isLoading ? (
               <p className={styles.EmptyRecent}>Loading gear catalog…</p>
             ) : null}
-            {shotStatus ? <p className={styles.EmptyRecent}>{shotStatus}</p> : null}
             <div className={styles.BoardWrap}>
               <p className={styles.Kicker}>Gear grid</p>
               <p className={styles.Hint}>Drag a card onto another slot to swap</p>

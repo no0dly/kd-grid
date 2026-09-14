@@ -72,3 +72,10 @@ export function uniquifySurvivorNames(survivors: Survivor[]) {
     return name === survivor.name ? survivor : { ...survivor, name };
   });
 }
+
+export function survivorListLabel(survivor: Pick<Survivor, "name" | "screenshotName">) {
+  const screenshotName = survivor.screenshotName.trim();
+  return screenshotName
+    ? `${survivor.name}(${screenshotName})`
+    : survivor.name;
+}

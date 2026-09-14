@@ -10,5 +10,6 @@ export {
   nextUniqueName,
   normalizeSurvivorName,
   uniquifySurvivorNames,
+  survivorListLabel,
 } from "@/lib/gear/utils/uniqueName";
 export { getGearPublicUrl } from "@/lib/gear/utils/urls";

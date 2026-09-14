@@ -9,6 +9,7 @@ export function createSurvivor(name = DEFAULT_SURVIVOR_NAME): Survivor {
   return {
     id: crypto.randomUUID(),
     name,
+    screenshotName: "",
     slots: emptySlots(),
     updatedAt: Date.now(),
   };

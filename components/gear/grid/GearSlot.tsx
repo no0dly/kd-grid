@@ -31,17 +31,15 @@ export function GearSlot({ index, item, onOpen, onClear }: GearSlotProps) {
     >
       {item ? (
         <>
-          <button
-            type="button"
+          <div
             className={styles.CardButton}
             ref={setNodeRef}
             {...listeners}
             {...attributes}
-            onClick={() => onOpen(index)}
-            aria-label={`${item.name}, drag to swap or click to replace`}
+            aria-label={`${item.name}, drag to swap`}
           >
             <GearCardImage item={item} fill sizes="22vw" />
-          </button>
+          </div>
           <div className={styles.Actions}>
             <button
               type="button"

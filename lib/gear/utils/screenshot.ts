@@ -12,7 +12,7 @@ export async function downloadGridPng(
   });
 
   const link = document.createElement("a");
-  link.download = `${slugify(survivorName)}-gear.png`;
+  link.download = `${slugify(survivorName)}.png`;
   link.href = dataUrl;
   link.click();
 }

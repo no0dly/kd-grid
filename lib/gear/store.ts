@@ -26,6 +26,7 @@ type SurvivorState = {
 type SurvivorActions = {
   createSurvivor: (name?: string) => string;
   renameSurvivor: (id: string, name: string) => boolean;
+  setScreenshotName: (id: string, screenshotName: string) => void;
   deleteSurvivor: (id: string) => void;
   setSlot: (survivorId: string, index: number, gearId: string | null) => void;
   swapSlots: (survivorId: string, fromIndex: number, toIndex: number) => void;
@@ -63,6 +64,19 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
           ),
         }));
         return true;
+      },
+      setScreenshotName: (id, screenshotName) => {
+        set((state) => ({
+          survivors: state.survivors.map((survivor) =>
+            survivor.id === id
+              ? {
+                  ...survivor,
+                  screenshotName,
+                  updatedAt: Date.now(),
+                }
+              : survivor,
+          ),
+        }));
       },
       deleteSurvivor: (id) => {
         set((state) => {
@@ -145,6 +159,7 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
           stored?.survivors && stored.survivors.length > 0
             ? stored.survivors.map((survivor) => ({
                 ...survivor,
+                screenshotName: survivor.screenshotName ?? "",
                 slots: Array.from({ length: SLOT_COUNT }, (_, index) =>
                   survivor.slots?.[index] === undefined
                     ? null
@@ -183,6 +198,7 @@ export const useSurvivorActions = () =>
     useShallow((state) => ({
       createSurvivor: state.createSurvivor,
       renameSurvivor: state.renameSurvivor,
+      setScreenshotName: state.setScreenshotName,
       deleteSurvivor: state.deleteSurvivor,
       setSlot: state.setSlot,
       swapSlots: state.swapSlots,

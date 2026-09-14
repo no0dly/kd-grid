@@ -8,6 +8,7 @@ type SurvivorNameFieldProps = {
   id: string;
   name: string;
   className?: string;
+  labelClassName?: string;
   errorClassName?: string;
 };
 
@@ -15,6 +16,7 @@ export function SurvivorNameField({
   id,
   name,
   className,
+  labelClassName,
   errorClassName,
 }: SurvivorNameFieldProps) {
   const survivors = useSurvivors();
@@ -36,10 +38,14 @@ export function SurvivorNameField({
 
   return (
     <div>
+      <label className={labelClassName} htmlFor={`survivor-name-${id}`}>
+        Name
+      </label>
       <input
+        id={`survivor-name-${id}`}
         className={className}
         value={draft}
-        aria-label="Survivor name"
+        placeholder="Survivor name"
         aria-invalid={error ? true : undefined}
         onChange={(event) => {
           const value = event.target.value;

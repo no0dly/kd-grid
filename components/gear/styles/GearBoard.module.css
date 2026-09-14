@@ -44,15 +44,24 @@
 
 .NameRow {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 1.1rem;
 }
 
 .NameRow > div {
   position: relative;
   flex: 1;
-  min-width: 10rem;
+  min-width: 0;
+}
+
+.NameLabel {
+  display: block;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #c8b273;
+  font-size: 0.65rem;
+  margin-bottom: 0.28rem;
 }
 
 .NameInput {
@@ -88,6 +97,7 @@
 }
 
 .Shot {
+  flex-shrink: 0;
   border: 1px solid #c8b273;
   background: transparent;
   color: #c8b273;
@@ -98,6 +108,10 @@
   font-size: 0.75rem;
   cursor: pointer;
   text-decoration: none;
+}
+
+.NameRow .Shot {
+  margin-left: 0;
 }
 
 .Shot:hover {

@@ -7,6 +7,7 @@ export type GearItem = GearRow & {
 export type Survivor = {
   id: string;
   name: string;
+  screenshotName: string;
   slots: (string | null)[];
   updatedAt: number;
 };

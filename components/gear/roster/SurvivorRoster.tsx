@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/app/AppHeader";
 import { useHasHydrated } from "@/lib/gear/hooks";
 import { useSurvivorActions, useSurvivors } from "@/lib/gear/store";
+import { survivorListLabel } from "@/lib/gear/utils";
 import styles from "./SurvivorRoster.module.css";
 
 export function SurvivorRoster() {
@@ -27,7 +28,7 @@ export function SurvivorRoster() {
             <p className={styles.Kicker}>Settlement</p>
             <h2 className={styles.Title}>Choose a survivor</h2>
             <p className={styles.Hint}>
-              Click a name to open that character’s gear grid.
+              Click a survivor to open that character’s gear grid.
             </p>
           </div>
           <button type="button" className={styles.Create} onClick={handleCreate}>
@@ -38,39 +39,29 @@ export function SurvivorRoster() {
         {!hydrated ? (
           <p className={styles.Hint}>Loading survivors…</p>
         ) : (
-          <table className={styles.Table}>
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">
-                  <span className={styles.SrOnly}>Actions</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {survivors.map((survivor) => (
-                <tr key={survivor.id}>
-                  <td>
-                    <Link
-                      href={`/survivors/${survivor.id}`}
-                      className={styles.NameLink}
-                    >
-                      {survivor.name}
-                    </Link>
-                  </td>
-                  <td className={styles.Actions}>
-                    <button
-                      type="button"
-                      className={styles.Delete}
-                      onClick={() => deleteSurvivor(survivor.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className={styles.List}>
+            <div className={styles.ListHead}>
+              <span>Name</span>
+              <span className={styles.SrOnly}>Actions</span>
+            </div>
+            {survivors.map((survivor) => (
+              <div key={survivor.id} className={styles.Row}>
+                <Link
+                  href={`/survivors/${survivor.id}`}
+                  className={styles.RowLink}
+                >
+                  {survivorListLabel(survivor)}
+                </Link>
+                <button
+                  type="button"
+                  className={styles.Delete}
+                  onClick={() => deleteSurvivor(survivor.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
