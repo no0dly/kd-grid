@@ -1,7 +1,8 @@
 export const GEAR_BUCKET = "gear";
 export const GEAR_IMAGE_WIDTH = 1084;
 export const GEAR_IMAGE_HEIGHT = 1092;
-export const SLOT_COUNT = 9;
+export const SURVIVOR_SLOT_COUNT = 9;
+export const SCOUT_SLOT_COUNT = 4;
 export const DRAG_OVERLAY_SIZE = 120;
 export const RECENT_CAP = 24;
 export const SEARCH_DEBOUNCE_MS = 400;

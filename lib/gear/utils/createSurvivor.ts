@@ -1,8 +1,16 @@
-import { DEFAULT_SURVIVOR_NAME, SLOT_COUNT } from "@/lib/gear/constants";
-import type { Survivor } from "@/lib/gear/types";
+import {
+  DEFAULT_SURVIVOR_NAME,
+  SCOUT_SLOT_COUNT,
+  SURVIVOR_SLOT_COUNT,
+} from "@/lib/gear/constants";
+import type { GridLayout, Survivor } from "@/lib/gear/types";
 
-export function emptySlots(): (string | null)[] {
-  return Array.from({ length: SLOT_COUNT }, () => null);
+export function slotCountForLayout(layout: GridLayout) {
+  return layout === "scout" ? SCOUT_SLOT_COUNT : SURVIVOR_SLOT_COUNT;
+}
+
+export function emptySlots(layout: GridLayout = "survivor"): (string | null)[] {
+  return Array.from({ length: slotCountForLayout(layout) }, () => null);
 }
 
 export function createSurvivor(name = DEFAULT_SURVIVOR_NAME): Survivor {
@@ -10,7 +18,8 @@ export function createSurvivor(name = DEFAULT_SURVIVOR_NAME): Survivor {
     id: crypto.randomUUID(),
     name,
     screenshotName: "",
-    slots: emptySlots(),
+    gridLayout: "survivor",
+    slots: emptySlots("survivor"),
     updatedAt: Date.now(),
   };
 }

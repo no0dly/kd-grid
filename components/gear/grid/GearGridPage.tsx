@@ -14,14 +14,15 @@ import {
 import { AppHeader } from "@/components/app/AppHeader";
 import { GearDragPreview } from "@/components/gear/grid/GearDragPreview";
 import { GearSlot } from "@/components/gear/grid/GearSlot";
+import { GridLayoutToggle } from "@/components/gear/grid/GridLayoutToggle";
 import { ScreenshotNameField } from "@/components/gear/grid/ScreenshotNameField";
 import { SurvivorNameField } from "@/components/gear/grid/SurvivorNameField";
 import { GearPicker } from "@/components/gear/picker";
 import { RecentRail } from "@/components/gear/recent";
-import { POINTER_ACTIVATION_DISTANCE, SLOT_COUNT } from "@/lib/gear/constants";
+import { POINTER_ACTIVATION_DISTANCE } from "@/lib/gear/constants";
 import { useHasHydrated } from "@/lib/gear/hooks";
 import { useSurvivor, useSurvivorActions } from "@/lib/gear/store";
-import type { GearItem } from "@/lib/gear/types";
+import type { GearItem, GridLayout } from "@/lib/gear/types";
 import { downloadGridPng } from "@/lib/gear/utils";
 import {
   slotCollisionDetection,
@@ -36,7 +37,7 @@ export function GearGridPage() {
   const survivorId = params.id;
   const hydrated = useHasHydrated();
   const survivor = useSurvivor(survivorId);
-  const { setSlot, swapSlots } = useSurvivorActions();
+  const { setSlot, swapSlots, setGridLayout } = useSurvivorActions();
   const { data: catalog = [], isLoading, error } = api.gear.list.useQuery();
   const gearById = useMemo(
     () => new Map(catalog.map((item) => [item.id, item])),
@@ -58,10 +59,12 @@ export function GearGridPage() {
   }
 
   function handleRecentPick(gearId: string) {
-    const target =
-      selectedIndex ??
-      survivor?.slots.findIndex((slot) => slot == null) ??
-      -1;
+    const slotCount = survivor?.slots.length ?? 0;
+    const selectedIsValid =
+      selectedIndex != null && selectedIndex >= 0 && selectedIndex < slotCount;
+    const target = selectedIsValid
+      ? selectedIndex
+      : (survivor?.slots.findIndex((slot) => slot == null) ?? -1);
     if (target < 0) {
       return;
     }
@@ -98,6 +101,13 @@ export function GearGridPage() {
     }
 
     assignToSlot(toIndex, gearId);
+  }
+
+  function handleLayoutChange(layout: GridLayout) {
+    setGridLayout(survivorId, layout);
+    setSelectedIndex(null);
+    setPickerIndex(null);
+    setActiveItem(undefined);
   }
 
   async function handleScreenshot() {
@@ -186,12 +196,28 @@ export function GearGridPage() {
               <p className={styles.EmptyRecent}>Loading gear catalog…</p>
             ) : null}
             <div className={styles.BoardWrap}>
-              <p className={styles.Kicker}>Gear grid</p>
-              <p className={styles.Hint}>Drag a card onto another slot to swap</p>
+              <div className={styles.BoardBar}>
+                <div>
+                  <p className={styles.Kicker}>Gear grid</p>
+                  <p className={styles.Hint}>
+                    Drag a card onto another slot to swap
+                  </p>
+                </div>
+                <GridLayoutToggle
+                  value={survivor.gridLayout}
+                  onChange={handleLayoutChange}
+                />
+              </div>
               <div className={styles.GridHost}>
-              <div ref={gridRef} className={styles.Grid}>
-                {Array.from({ length: SLOT_COUNT }, (_, index) => {
-                  const gearId = survivor.slots[index];
+              <div
+                ref={gridRef}
+                className={`${styles.Grid} ${
+                  survivor.gridLayout === "scout"
+                    ? styles.GridScout
+                    : styles.GridSurvivor
+                }`}
+              >
+                {survivor.slots.map((gearId, index) => {
                   return (
                     <GearSlot
                       key={index}

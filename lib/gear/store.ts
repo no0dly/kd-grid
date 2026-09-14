@@ -6,15 +6,16 @@ import { useShallow } from "zustand/react/shallow";
 import {
   DEFAULT_SURVIVOR_NAME,
   RECENT_CAP,
-  SLOT_COUNT,
   SURVIVOR_STORAGE_KEY,
 } from "@/lib/gear/constants";
-import type { Survivor } from "@/lib/gear/types";
+import type { GridLayout, Survivor } from "@/lib/gear/types";
 import {
   createSurvivor,
+  emptySlots,
   isNameTaken,
   nextUniqueName,
   normalizeSurvivorName,
+  slotCountForLayout,
   uniquifySurvivorNames,
 } from "@/lib/gear/utils";
 
@@ -27,6 +28,7 @@ type SurvivorActions = {
   createSurvivor: (name?: string) => string;
   renameSurvivor: (id: string, name: string) => boolean;
   setScreenshotName: (id: string, screenshotName: string) => void;
+  setGridLayout: (id: string, gridLayout: GridLayout) => void;
   deleteSurvivor: (id: string) => void;
   setSlot: (survivorId: string, index: number, gearId: string | null) => void;
   swapSlots: (survivorId: string, fromIndex: number, toIndex: number) => void;
@@ -78,6 +80,22 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
           ),
         }));
       },
+      setGridLayout: (id, gridLayout) => {
+        set((state) => ({
+          survivors: state.survivors.map((survivor) => {
+            if (survivor.id !== id || survivor.gridLayout === gridLayout) {
+              return survivor;
+            }
+
+            return {
+              ...survivor,
+              gridLayout,
+              slots: emptySlots(gridLayout),
+              updatedAt: Date.now(),
+            };
+          }),
+        }));
+      },
       deleteSurvivor: (id) => {
         set((state) => {
           const remaining = state.survivors.filter(
@@ -92,13 +110,12 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
         });
       },
       setSlot: (survivorId, index, gearId) => {
-        if (index < 0 || index >= SLOT_COUNT) {
-          return;
-        }
-
         set((state) => ({
           survivors: state.survivors.map((survivor) => {
             if (survivor.id !== survivorId) {
+              return survivor;
+            }
+            if (index < 0 || index >= survivor.slots.length) {
               return survivor;
             }
             const slots = [...survivor.slots];
@@ -114,19 +131,19 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
         }));
       },
       swapSlots: (survivorId, fromIndex, toIndex) => {
-        if (
-          fromIndex === toIndex ||
-          fromIndex < 0 ||
-          toIndex < 0 ||
-          fromIndex >= SLOT_COUNT ||
-          toIndex >= SLOT_COUNT
-        ) {
-          return;
-        }
-
         set((state) => ({
           survivors: state.survivors.map((survivor) => {
             if (survivor.id !== survivorId) {
+              return survivor;
+            }
+            const slotCount = survivor.slots.length;
+            if (
+              fromIndex === toIndex ||
+              fromIndex < 0 ||
+              toIndex < 0 ||
+              fromIndex >= slotCount ||
+              toIndex >= slotCount
+            ) {
               return survivor;
             }
             const slots = [...survivor.slots];
@@ -157,15 +174,21 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
         const stored = persisted as Partial<SurvivorState> | undefined;
         const survivors =
           stored?.survivors && stored.survivors.length > 0
-            ? stored.survivors.map((survivor) => ({
-                ...survivor,
-                screenshotName: survivor.screenshotName ?? "",
-                slots: Array.from({ length: SLOT_COUNT }, (_, index) =>
-                  survivor.slots?.[index] === undefined
-                    ? null
-                    : survivor.slots[index],
-                ),
-              }))
+            ? stored.survivors.map((survivor) => {
+                const gridLayout: GridLayout =
+                  survivor.gridLayout === "scout" ? "scout" : "survivor";
+                const slotCount = slotCountForLayout(gridLayout);
+                return {
+                  ...survivor,
+                  screenshotName: survivor.screenshotName ?? "",
+                  gridLayout,
+                  slots: Array.from({ length: slotCount }, (_, index) =>
+                    survivor.slots?.[index] === undefined
+                      ? null
+                      : survivor.slots[index],
+                  ),
+                };
+              })
             : current.survivors;
 
         return {
@@ -199,6 +222,7 @@ export const useSurvivorActions = () =>
       createSurvivor: state.createSurvivor,
       renameSurvivor: state.renameSurvivor,
       setScreenshotName: state.setScreenshotName,
+      setGridLayout: state.setGridLayout,
       deleteSurvivor: state.deleteSurvivor,
       setSlot: state.setSlot,
       swapSlots: state.swapSlots,
