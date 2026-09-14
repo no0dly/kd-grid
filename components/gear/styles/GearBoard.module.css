@@ -1,0 +1,431 @@
+.Page {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 20% 0%, #2c261c 0%, transparent 36%),
+    linear-gradient(180deg, #121212 0%, #0c0c0c 100%);
+  color: #e8e4d9;
+}
+
+.Missing {
+  padding: 3rem 1.25rem;
+  text-align: center;
+}
+
+.Missing a {
+  color: #c8b273;
+}
+
+.Layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 0.9rem;
+  padding: 0.75rem 1rem 1rem;
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .Layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) 180px;
+  }
+}
+
+.Stage {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.NameRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.NameRow > div {
+  position: relative;
+  flex: 1;
+  min-width: 10rem;
+}
+
+.NameInput {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #c8b273;
+  color: #f4efe3;
+  font-size: 1.15rem;
+  padding: 0.15rem 0;
+}
+
+.NameInput:focus {
+  outline: none;
+  border-bottom-color: #e6d59a;
+}
+
+.NameInput[aria-invalid="true"] {
+  border-bottom-color: #a15d5d;
+}
+
+.NameError {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.15rem);
+  margin: 0;
+  color: #f0c2c2;
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  text-transform: none;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.Shot {
+  border: 1px solid #c8b273;
+  background: transparent;
+  color: #c8b273;
+  padding: 0.45rem 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.Shot:hover {
+  background: #c8b273;
+  color: #1a150c;
+}
+
+.BoardWrap {
+  flex: 1;
+  min-height: 0;
+  background: #1a1a1a;
+  border: 1px solid #2c2c2c;
+  padding: 0.7rem 0.8rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.Kicker {
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.42em;
+  font-size: 0.72rem;
+  color: #c8b273;
+}
+
+.Hint {
+  margin: 0.2rem 0 0.55rem;
+  text-align: center;
+  color: #8a8478;
+  font-size: 0.72rem;
+}
+
+.GridHost {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  container-type: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  width: min(100cqw, 100cqh);
+  aspect-ratio: 1 / 1;
+}
+
+.Slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  line-height: 0;
+  border: 1px dashed #5a5a5a;
+  border-radius: 0.75rem;
+  background: #111;
+  overflow: hidden;
+}
+
+.SlotOver {
+  border-color: #c8b273;
+}
+
+.SlotDragging {
+  opacity: 0.35;
+}
+
+.Empty {
+  width: 100%;
+  height: 100%;
+  color: #5c5c5c;
+  font-size: 1.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.Empty:hover {
+  color: #c8b273;
+}
+
+.CardButton {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+  line-height: 0;
+}
+
+.CardButton:active {
+  cursor: grabbing;
+}
+
+.Actions {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.Slot:hover .Actions,
+.Slot:focus-within .Actions {
+  opacity: 1;
+}
+
+.Action {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid #3a3a3a;
+  background: #111111d4;
+  color: #f4efe3;
+  padding: 0;
+  cursor: pointer;
+}
+
+.ActionIcon {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+}
+
+.Action:hover {
+  border-color: #c8b273;
+  color: #c8b273;
+}
+
+.Rail {
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid #2c2c2c;
+  background: #161616;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.RailTitle {
+  margin: 0 0 0.65rem;
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  color: #c8b273;
+  text-transform: uppercase;
+}
+
+.Search {
+  width: 100%;
+  margin-bottom: 0.75rem;
+  background: #101010;
+  border: 1px solid #333;
+  color: #e8e4d9;
+  padding: 0.45rem 0.55rem;
+}
+
+.RecentList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  overflow: auto;
+  min-height: 0;
+}
+
+.RecentItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  border: 1px solid #2c2c2c;
+  background: #111;
+  padding: 0.35rem;
+}
+
+.RecentPick {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 0;
+  cursor: grab;
+}
+
+.RecentPick:active {
+  cursor: grabbing;
+}
+
+.RecentRemove {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: #8a8478;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.RecentItem:hover .RecentRemove,
+.RecentItem:focus-within .RecentRemove {
+  opacity: 1;
+}
+
+.RecentRemove:hover {
+  color: #f0c2c2;
+}
+
+.RecentItemDragging {
+  opacity: 0.35;
+}
+
+.RecentThumb {
+  position: relative;
+  aspect-ratio: 1084 / 1092;
+  background: #0c0c0c;
+}
+
+.RecentName {
+  font-size: 0.82rem;
+}
+
+.EmptyRecent {
+  color: #8a8478;
+  font-size: 0.85rem;
+}
+
+.Overlay {
+  position: fixed;
+  inset: 0;
+  background: #000000b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 40;
+}
+
+.Dialog {
+  width: min(720px, 100%);
+  height: min(680px, 100%);
+  background: #161616;
+  border: 1px solid #3a3428;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.DialogHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.DialogTitle {
+  margin: 0;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  color: #c8b273;
+}
+
+.Close {
+  border: 1px solid #3a3428;
+  background: transparent;
+  color: #e8e4d9;
+  padding: 0.3rem 0.55rem;
+}
+
+.PickerScroll {
+  flex: 1;
+  overflow: auto;
+  contain: strict;
+}
+
+.PickerRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  padding: 0 0.1rem;
+}
+
+.PickerCard {
+  border: 1px solid #2c2c2c;
+  background: #111;
+  color: inherit;
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+}
+
+.PickerCard:hover {
+  border-color: #c8b273;
+}
+
+.PickerThumb {
+  position: relative;
+  aspect-ratio: 1084 / 1092;
+}
+
+.PickerName {
+  display: block;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.4rem 0.45rem;
+}
+
+.Count {
+  margin: 0.45rem 0 0.65rem;
+  color: #8a8478;
+  font-size: 0.8rem;
+}

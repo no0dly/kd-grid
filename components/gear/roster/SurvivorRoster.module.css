@@ -1,0 +1,140 @@
+.Page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at top, #2a2620 0%, transparent 42%),
+    linear-gradient(180deg, #141414 0%, #0f0f0f 100%);
+  color: #e8e4d9;
+}
+
+.Content {
+  flex: 1;
+  padding: 1.5rem 1.25rem 2.5rem;
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.Intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.Kicker {
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #c8b273;
+  font-size: 0.72rem;
+}
+
+.Title {
+  margin: 0.35rem 0 0;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.Hint {
+  margin: 0.4rem 0 0;
+  color: #9c9688;
+  font-size: 0.92rem;
+}
+
+.Create {
+  border: 1px solid #c8b273;
+  background: #c8b273;
+  color: #1a150c;
+  padding: 0.55rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.Create:hover {
+  background: #d4c286;
+}
+
+.Table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #161410;
+  border: 1px solid #3a3428;
+}
+
+.Table th,
+.Table td {
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #2c281f;
+}
+
+.Table th {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: #c8b273;
+  font-weight: 600;
+}
+
+.Table tbody tr:hover {
+  background: #1d1b17;
+}
+
+.Table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.NameLink {
+  color: inherit;
+  text-decoration: none;
+  font: inherit;
+}
+
+.NameLink:hover {
+  color: #c8b273;
+}
+
+.Actions {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.Delete {
+  display: inline-block;
+  border: 1px solid #3a3428;
+  background: transparent;
+  color: #e8e4d9;
+  padding: 0.35rem 0.6rem;
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.Delete:hover {
+  border-color: #a15d5d;
+  color: #f0c2c2;
+}
+
+.SrOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

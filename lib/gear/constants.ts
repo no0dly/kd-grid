@@ -1,0 +1,13 @@
+export const GEAR_BUCKET = "gear";
+export const GEAR_IMAGE_WIDTH = 1084;
+export const GEAR_IMAGE_HEIGHT = 1092;
+export const SLOT_COUNT = 9;
+export const DRAG_OVERLAY_SIZE = 120;
+export const RECENT_CAP = 24;
+export const SEARCH_DEBOUNCE_MS = 400;
+export const SURVIVOR_STORAGE_KEY = "kd-grid:survivors:v1";
+export const DEFAULT_SURVIVOR_NAME = "New Survivor";
+export const DUPLICATE_NAME_ERROR = "That name is already used.";
+export const PICKER_COLUMNS = 3;
+export const PICKER_ROW_HEIGHT = 230;
+export const POINTER_ACTIVATION_DISTANCE = 8;

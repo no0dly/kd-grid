@@ -12,6 +12,7 @@ import {
   type IWorkbookData,
 } from "@univerjs/presets";
 import { createPreacherWorkbook } from "@/lib/templates/preacher";
+import { AppHeader } from "@/components/app/AppHeader";
 import {
   addCharacterSheet,
   CHARACTER_SHEET_UNIVER_UI,
@@ -213,10 +214,7 @@ export function CharacterSheet() {
 
   return (
     <div className="flex h-dvh flex-col bg-[linear-gradient(180deg,#e8f2ef_0%,#f3f6f5_40%,#eef1f0_100%)] text-[#14201c]">
-      <header className="flex flex-wrap items-center gap-3 border-b border-[#d0d8d5] bg-[#f3f6f5]/90 px-4 py-3 backdrop-blur">
-        <h1 className="mr-auto text-lg font-semibold tracking-tight text-[#0a4b47]">
-          KD Grid
-        </h1>
+      <AppHeader variant="light">
         <button
           type="button"
           className="rounded border border-[#0c5f59] bg-[#0f766e] px-3 py-1.5 text-sm text-white hover:bg-[#0c5f59] disabled:opacity-50"
@@ -247,7 +245,7 @@ export function CharacterSheet() {
         >
           Reset
         </button>
-      </header>
+      </AppHeader>
 
       {status ? (
         <p

@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "jxiizmfxoooqzgnvqjhh.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
+  },
   transpilePackages: [
     "@univerjs/presets",
     "@univerjs/preset-sheets-core",
