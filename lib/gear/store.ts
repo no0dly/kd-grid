@@ -8,14 +8,21 @@ import {
   RECENT_CAP,
   SURVIVOR_STORAGE_KEY,
 } from "@/lib/gear/constants";
-import type { GridLayout, Survivor } from "@/lib/gear/types";
+import type {
+  AccentColor,
+  GridLayout,
+  StatKey,
+  StatRow,
+  Survivor,
+} from "@/lib/gear/types";
 import {
   createSurvivor,
   emptySlots,
+  emptyStats,
+  hydrateSurvivor,
   isNameTaken,
   nextUniqueName,
   normalizeSurvivorName,
-  slotCountForLayout,
   uniquifySurvivorNames,
 } from "@/lib/gear/utils";
 
@@ -28,6 +35,9 @@ type SurvivorActions = {
   createSurvivor: (name?: string) => string;
   renameSurvivor: (id: string, name: string) => boolean;
   setScreenshotName: (id: string, screenshotName: string) => void;
+  setAccent: (id: string, accent: AccentColor) => void;
+  setImportant: (id: string, important: string) => void;
+  setStat: (id: string, row: StatRow, key: StatKey, value: number) => void;
   setGridLayout: (id: string, gridLayout: GridLayout) => void;
   deleteSurvivor: (id: string) => void;
   setSlot: (survivorId: string, index: number, gearId: string | null) => void;
@@ -78,6 +88,46 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
                 }
               : survivor,
           ),
+        }));
+      },
+      setAccent: (id, accent) => {
+        set((state) => ({
+          survivors: state.survivors.map((survivor) =>
+            survivor.id === id
+              ? { ...survivor, accent, updatedAt: Date.now() }
+              : survivor,
+          ),
+        }));
+      },
+      setImportant: (id, important) => {
+        set((state) => ({
+          survivors: state.survivors.map((survivor) =>
+            survivor.id === id
+              ? { ...survivor, important, updatedAt: Date.now() }
+              : survivor,
+          ),
+        }));
+      },
+      setStat: (id, row, key, value) => {
+        const nextValue = Number.isFinite(value) ? Math.trunc(value) : 0;
+        set((state) => ({
+          survivors: state.survivors.map((survivor) => {
+            if (survivor.id !== id) {
+              return survivor;
+            }
+            const stats = survivor.stats ?? emptyStats();
+            return {
+              ...survivor,
+              stats: {
+                ...stats,
+                [row]: {
+                  ...stats[row],
+                  [key]: nextValue,
+                },
+              },
+              updatedAt: Date.now(),
+            };
+          }),
         }));
       },
       setGridLayout: (id, gridLayout) => {
@@ -174,21 +224,7 @@ export const useSurvivorStoreBase = create<SurvivorStore>()(
         const stored = persisted as Partial<SurvivorState> | undefined;
         const survivors =
           stored?.survivors && stored.survivors.length > 0
-            ? stored.survivors.map((survivor) => {
-                const gridLayout: GridLayout =
-                  survivor.gridLayout === "scout" ? "scout" : "survivor";
-                const slotCount = slotCountForLayout(gridLayout);
-                return {
-                  ...survivor,
-                  screenshotName: survivor.screenshotName ?? "",
-                  gridLayout,
-                  slots: Array.from({ length: slotCount }, (_, index) =>
-                    survivor.slots?.[index] === undefined
-                      ? null
-                      : survivor.slots[index],
-                  ),
-                };
-              })
+            ? stored.survivors.map((survivor) => hydrateSurvivor(survivor))
             : current.survivors;
 
         return {
@@ -222,6 +258,9 @@ export const useSurvivorActions = () =>
       createSurvivor: state.createSurvivor,
       renameSurvivor: state.renameSurvivor,
       setScreenshotName: state.setScreenshotName,
+      setAccent: state.setAccent,
+      setImportant: state.setImportant,
+      setStat: state.setStat,
       setGridLayout: state.setGridLayout,
       deleteSurvivor: state.deleteSurvivor,
       setSlot: state.setSlot,

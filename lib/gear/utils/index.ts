@@ -1,7 +1,15 @@
 export { chunk } from "@/lib/gear/utils/chunk";
-export { createSurvivor, emptySlots, slotCountForLayout } from "@/lib/gear/utils/createSurvivor";
+export {
+  createSurvivor,
+  emptySlots,
+  emptyStats,
+  hydrateSurvivor,
+  normalizeAccent,
+  normalizeStats,
+  slotCountForLayout,
+} from "@/lib/gear/utils/createSurvivor";
 export { filterGearByName } from "@/lib/gear/utils/filterGear";
-export { downloadGridPng } from "@/lib/gear/utils/screenshot";
+export { downloadSurvivorShots, screenshotFilenames } from "@/lib/gear/utils/screenshot";
 export { slugify } from "@/lib/gear/utils/slugify";
 export {
   duplicateNameError,

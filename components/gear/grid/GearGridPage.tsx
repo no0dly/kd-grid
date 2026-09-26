@@ -12,10 +12,13 @@ import {
   type DragEndEvent,
 } from "@dnd-kit/core";
 import { AppHeader } from "@/components/app/AppHeader";
+import { AccentPicker } from "@/components/gear/grid/AccentPicker";
 import { GearDragPreview } from "@/components/gear/grid/GearDragPreview";
 import { GearSlot } from "@/components/gear/grid/GearSlot";
 import { GridLayoutToggle } from "@/components/gear/grid/GridLayoutToggle";
+import { ImportantBanner } from "@/components/gear/grid/ImportantBanner";
 import { ScreenshotNameField } from "@/components/gear/grid/ScreenshotNameField";
+import { StatsTable } from "@/components/gear/grid/StatsTable";
 import { SurvivorNameField } from "@/components/gear/grid/SurvivorNameField";
 import { GearPicker } from "@/components/gear/picker";
 import { RecentRail } from "@/components/gear/recent";
@@ -23,7 +26,7 @@ import { POINTER_ACTIVATION_DISTANCE } from "@/lib/gear/constants";
 import { useHasHydrated } from "@/lib/gear/hooks";
 import { useSurvivor, useSurvivorActions } from "@/lib/gear/store";
 import type { GearItem, GridLayout } from "@/lib/gear/types";
-import { downloadGridPng } from "@/lib/gear/utils";
+import { downloadSurvivorShots } from "@/lib/gear/utils";
 import {
   slotCollisionDetection,
   slotIndexFromDndId,
@@ -37,7 +40,8 @@ export function GearGridPage() {
   const survivorId = params.id;
   const hydrated = useHasHydrated();
   const survivor = useSurvivor(survivorId);
-  const { setSlot, swapSlots, setGridLayout } = useSurvivorActions();
+  const { setSlot, swapSlots, setGridLayout, setAccent, setImportant, setStat } =
+    useSurvivorActions();
   const { data: catalog = [], isLoading, error } = api.gear.list.useQuery();
   const gearById = useMemo(
     () => new Map(catalog.map((item) => [item.id, item])),
@@ -47,6 +51,8 @@ export function GearGridPage() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState<GearItem | undefined>();
   const gridRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const importantRef = useRef<HTMLDivElement>(null);
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: POINTER_ACTIVATION_DISTANCE },
@@ -111,15 +117,22 @@ export function GearGridPage() {
   }
 
   async function handleScreenshot() {
-    if (!gridRef.current || !survivor) {
+    if (
+      !gridRef.current ||
+      !statsRef.current ||
+      !importantRef.current ||
+      !survivor
+    ) {
       return;
     }
 
     try {
-      await downloadGridPng(
-        gridRef.current,
-        survivor.screenshotName.trim() || survivor.name,
-      );
+      await downloadSurvivorShots({
+        baseName: survivor.screenshotName.trim() || survivor.name,
+        grid: gridRef.current,
+        stats: statsRef.current,
+        important: importantRef.current,
+      });
     } catch (shotError) {
       console.error(shotError);
     }
@@ -181,13 +194,37 @@ export function GearGridPage() {
                 className={styles.NameInput}
                 labelClassName={styles.NameLabel}
               />
+              <AccentPicker
+                id={survivor.id}
+                value={survivor.accent}
+                onChange={(accent) => setAccent(survivor.id, accent)}
+              />
               <button
                 type="button"
                 className={styles.Shot}
                 onClick={() => void handleScreenshot()}
               >
-                Screenshot grid
+                Make screenshots
               </button>
+            </div>
+            <div className={styles.SheetBlocks}>
+              <StatsTable
+                key={`${survivor.id}-stats`}
+                frameRef={statsRef}
+                name={survivor.name}
+                accent={survivor.accent}
+                stats={survivor.stats}
+                onChange={(row, key, value) =>
+                  setStat(survivor.id, row, key, value)
+                }
+              />
+              <ImportantBanner
+                key={`${survivor.id}-important`}
+                frameRef={importantRef}
+                accent={survivor.accent}
+                value={survivor.important}
+                onChange={(important) => setImportant(survivor.id, important)}
+              />
             </div>
             {error ? (
               <p className={styles.EmptyRecent}>Could not load the gear catalog.</p>

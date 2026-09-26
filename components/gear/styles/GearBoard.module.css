@@ -513,3 +513,160 @@
   color: #8a8478;
   font-size: 0.8rem;
 }
+
+.NameRow > .AccentPicker {
+  flex: 0 0 auto;
+}
+
+.AccentSwatches {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 1.85rem;
+}
+
+.AccentSwatch {
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.AccentSwatch[aria-checked="true"] {
+  outline: 2px solid #e6d59a;
+  outline-offset: 2px;
+}
+
+.AccentSwatch:focus-visible {
+  outline: 2px solid #e6d59a;
+  outline-offset: 2px;
+}
+
+.SheetBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.StatsFrame {
+  width: fit-content;
+  max-width: 100%;
+  background: #0a0a0a;
+  padding: 2px;
+}
+
+.StatsTable {
+  width: max-content;
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 1px;
+  background: #0a0a0a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.72rem;
+  line-height: 1;
+  table-layout: auto;
+}
+
+.StatsCorner,
+.StatsHeader,
+.StatsRowLabel {
+  background: var(--sheet-accent, #8f3538);
+  color: #fff;
+  text-align: center;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  padding: 0.28rem 0.2rem;
+  font-weight: 700;
+}
+
+.StatsHeader,
+.StatsValue {
+  width: 2.55rem;
+}
+
+.StatsCorner {
+  width: auto;
+  max-width: 8.5rem;
+  text-align: left;
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.StatsValue {
+  background: #1c2433;
+  padding: 0;
+}
+
+.StatsInput {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1.1;
+  text-align: center;
+  padding: 0.22rem 0.08rem;
+}
+
+.StatsInput:focus {
+  outline: 1px solid #e6d59a;
+  outline-offset: -2px;
+}
+
+.ImportantBanner {
+  display: flex;
+  align-items: stretch;
+  min-height: 2.5rem;
+  background: #111318;
+}
+
+.ImportantLabel {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  background: var(--sheet-accent, #8f3538);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.45rem 0.75rem;
+}
+
+.ImportantInput {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  resize: none;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  padding: 0.5rem 0.75rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+textarea.ImportantInput {
+  field-sizing: content;
+  max-height: 4.8rem;
+  overflow: auto;
+}
+
+.ImportantInput:focus {
+  outline: 1px solid #e6d59a;
+  outline-offset: -2px;
+}
