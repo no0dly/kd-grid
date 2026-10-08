@@ -18,7 +18,7 @@ export const POINTER_ACTIVATION_DISTANCE = 8;
 export const ACCENT_COLORS = {
   red: "#8f3538",
   orange: "#c46a1a",
-  cyan: "#1a8a9a",
+  cyan: "#1E507B",
   blue: "#3F5E58",
   black: "#141414",
 } as const satisfies Record<AccentColor, string>;
